@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Ostrander &amp; Hruska Family</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a records-office workbench. Sticky header with tabs, the chart fills the screen, a drawer opens per person. */
+:root{
+  --paper:#EEF2EF; --surface:#FBFCFB; --ink:#1A2631; --muted:#56636E; --line:#C7D1CB;
+  --accent:#2B6853; --accent-soft:#D8E9E1; --lead:#9A6A12; --lead-soft:#F3E6C8; --ghost:#7F8791; --shade:rgba(26,38,49,.08);
+  --f-display:"Libre Caslon Display","Iowan Old Style",Georgia,serif;
+  --f-body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0D1615; --surface:#15201E; --ink:#E2E9E5; --muted:#97A5A0; --line:#2A3936;
+  --accent:#76C1A4; --accent-soft:#1D3530; --lead:#DDB05A; --lead-soft:#372D1C; --ghost:#7B8580; --shade:rgba(0,0,0,.35); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0D1615; --surface:#15201E; --ink:#E2E9E5; --muted:#97A5A0; --line:#2A3936;
+  --accent:#76C1A4; --accent-soft:#1D3530; --lead:#DDB05A; --lead-soft:#372D1C; --ghost:#7B8580; --shade:rgba(0,0,0,.35); color-scheme:dark}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--paper);color:var(--ink);font:15px/1.55 var(--f-body);-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+a{color:var(--accent)}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+header.top{padding-block:22px 0;display:grid;gap:14px;max-width:1400px;margin:0 auto}
+.eyebrow{font:500 11px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+h1{font:400 clamp(30px,5vw,52px)/1.02 var(--f-display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1 .amp{color:var(--accent)}
+.lede{margin:0;max-width:64ch;color:var(--muted)}
+.stats{display:flex;flex-wrap:wrap;gap:6px 22px;font:500 12px/1.4 var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.stats b{color:var(--ink);font-weight:500;font-size:15px;margin-right:4px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-bottom:1px solid var(--line)}
+.bar-in{max-width:1400px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px;padding-block:10px}
+nav.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+nav.tabs a{padding:7px 12px;border-radius:6px;text-decoration:none;color:var(--muted);font-weight:500;white-space:nowrap}
+nav.tabs a[aria-current="page"]{background:var(--ink);color:var(--paper)}
+nav.tabs a:hover:not([aria-current]){background:var(--shade);color:var(--ink)}
+.viewas{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.viewas select{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:5px 8px;max-width:210px}
+
+main{max-width:1400px;margin:0 auto}
+section.view{padding-block:18px 48px}
+
+/* Tree */
+#v-tree{padding-block:12px 16px}
+.stage{position:relative;height:calc(100vh - 240px);min-height:480px;background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;touch-action:none}
+#tree{width:100%;height:100%;display:block;cursor:grab;user-select:none}
+#tree.drag{cursor:grabbing}
+.tools{position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:4px}
+.tools button{width:34px;height:34px;border-radius:7px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-size:17px;line-height:1}
+.tools button:hover{border-color:var(--accent)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:10px;font-size:12.5px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.sw{width:22px;height:13px;border-radius:3px;border:1.5px solid var(--line);background:var(--surface)}
+.sw.sel{border-color:var(--accent);background:var(--accent-soft)}
+.sw.gh{border-style:dashed;border-color:var(--lead)}
+.sw.nc{border-style:dotted;border-color:var(--ghost)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.hintpill{font:500 10px/1 var(--f-mono);background:var(--lead-soft);color:var(--lead);padding:3px 5px;border-radius:4px}
+
+svg .card rect.bg{fill:var(--surface);stroke:var(--line);stroke-width:1.2}
+svg .card{cursor:pointer}
+svg .card:hover rect.bg{stroke:var(--accent)}
+svg .card.sel rect.bg{fill:var(--accent-soft);stroke:var(--accent);stroke-width:2}
+svg .card.ghost rect.bg{fill:none;stroke:var(--lead);stroke-dasharray:5 4}
+svg .card.nc rect.bg{stroke:var(--ghost);stroke-dasharray:2 3}
+svg .card.dim{opacity:.45}
+svg .card:focus{outline:none}
+svg .card:focus-visible rect.bg{stroke:var(--accent);stroke-width:2.5}
+svg .nm{font:600 14px var(--f-body);fill:var(--ink)}
+svg .lf{font:400 11.5px var(--f-mono);fill:var(--muted)}
+svg .rl{font:600 10px var(--f-body);letter-spacing:.07em;text-transform:uppercase;fill:var(--accent)}
+svg .card.ghost .rl,svg .card.ghost .nm{fill:var(--lead)}
+svg .card.nc .rl{fill:var(--ghost)}
+svg .lv{fill:var(--accent)}
+svg .hb rect{fill:var(--lead-soft)} svg .hb text{font:500 9.5px var(--f-mono);fill:var(--lead)}
+svg .edge{fill:none;stroke:var(--line);stroke-width:1.6}
+svg .edge.on{stroke:var(--accent);stroke-width:2.6}
+svg .edge.gh{stroke:var(--lead);stroke-dasharray:5 4}
+svg .mar{stroke:var(--muted);stroke-width:1.6}
+svg .rowlab{font:500 10.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;fill:var(--muted)}
+svg .note{font:italic 400 12px var(--f-body);fill:var(--muted)}
+
+/* Drawer */
+#panel{position:fixed;z-index:20;top:0;right:0;bottom:0;width:min(470px,100%);background:var(--surface);border-left:1px solid var(--line);box-shadow:-18px 0 40px var(--shade);overflow-y:auto;overscroll-behavior:contain;
+  padding:calc(env(safe-area-inset-top,0px) + 18px) max(22px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 40px) 22px}
+#panel .close{position:sticky;top:0;float:right;margin:-4px -6px 0 0;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-size:18px;z-index:1}
+.pn{font:400 32px/1.08 var(--f-display);margin:2px 0 6px;text-wrap:balance}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}
+.chip{font:600 10.5px/1 var(--f-body);letter-spacing:.06em;text-transform:uppercase;padding:5px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.chip.gray{background:var(--shade);color:var(--muted)}
+.chip.lead{background:var(--lead-soft);color:var(--lead)}
+.narr{border-left:2px solid var(--line);padding-left:12px;color:var(--muted);font-style:italic;margin:14px 0}
+.narr small{display:block;font:500 10.5px var(--f-mono);font-style:normal;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px}
+h3{font:600 12px/1 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:26px 0 10px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+h3 em{font:500 11px var(--f-mono);font-style:normal;letter-spacing:0;text-transform:none}
+ol.facts{list-style:none;margin:0;padding:0;display:grid;gap:0}
+ol.facts li{display:grid;grid-template-columns:52px 1fr;gap:10px;padding:9px 0;border-top:1px solid var(--line)}
+ol.facts li:first-child{border-top:0}
+.yr{font:500 13px var(--f-mono);color:var(--accent);font-variant-numeric:tabular-nums;padding-top:1px}
+.ft{font-weight:600}
+.fd{color:var(--muted);font-size:14px}
+.cite{font:400 11.5px/1.45 var(--f-mono);color:var(--muted);margin-top:3px}
+.alt{font:500 10px var(--f-mono);color:var(--lead);margin-left:6px;text-transform:uppercase}
+.fam{display:grid;gap:10px}
+.fam div{display:grid;grid-template-columns:72px 1fr;gap:10px;align-items:start}
+.fam .k{font-size:12.5px;color:var(--muted);padding-top:4px}
+.plinks{display:flex;flex-wrap:wrap;gap:5px}
+.plink{border:1px solid var(--line);background:var(--paper);border-radius:6px;padding:3px 8px;cursor:pointer;font-size:13.5px;text-align:left}
+.plink:hover{border-color:var(--accent)}
+.plink small{color:var(--muted);font:400 11px var(--f-mono);margin-left:5px}
+ul.srcs{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+ul.srcs li{padding:9px 11px;background:var(--paper);border-radius:7px}
+ul.srcs b{font-weight:600;font-size:14px}
+.callout{background:var(--lead-soft);border-radius:8px;padding:12px 14px;font-size:14px;margin:4px 0 12px}
+.callout b{color:var(--lead)}
+.callout a{color:var(--ink);font-weight:600;cursor:pointer}
+ul.leads{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+li.lead{border:1px solid var(--line);border-radius:7px;padding:9px 11px;font-size:13.5px;display:grid;gap:2px}
+li.lead .lk{font:500 10px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--lead)}
+li.lead b{font-weight:600}
+li.lead .m{color:var(--muted)}
+details.more summary{cursor:pointer;color:var(--accent);font-weight:600;font-size:13.5px;padding:8px 0;list-style:none}
+details.more summary::-webkit-details-marker{display:none}
+details.more[open] summary{display:none}
+
+/* People */
+.ptools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+.ptools input,.ptools select{background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:8px 11px}
+.ptools input{flex:1 1 240px;min-width:0}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:14px}
+th{font:600 11px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+tbody tr{cursor:pointer}
+tbody tr:hover td{background:var(--shade)}
+td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;text-align:right}
+td .nm2{font-weight:600}
+td .rel{font-size:12px;color:var(--accent);text-transform:capitalize}
+.ttag{font:400 11.5px var(--f-mono);color:var(--muted)}
+
+/* Timeline */
+.life{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:12px 8px}
+.life svg{display:block;min-width:700px;width:100%}
+.life .ax{font:400 10.5px var(--f-mono);fill:var(--muted)}
+.life .gl{stroke:var(--line);stroke-width:1}
+.life .ln{font:500 11.5px var(--f-body);fill:var(--ink);cursor:pointer}
+.life .ln:hover{fill:var(--accent)}
+.life .bs{fill:var(--accent)}
+.life .bl{fill:url(#hatch)}
+.life .bu{fill:url(#fade)}
+.life .bv{fill:url(#fadeL)}
+.cap{font-size:13px;color:var(--muted);margin:10px 2px 0;max-width:80ch}
+.dec{display:grid;grid-template-columns:90px 1fr;gap:16px;padding:18px 0;border-top:1px solid var(--line)}
+.dec h4{margin:0;font:400 26px/1 var(--f-display);color:var(--accent)}
+.dec ul{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.dec li{display:grid;grid-template-columns:auto 1fr;gap:10px;font-size:14px}
+.dec .yy{font:500 12.5px var(--f-mono);color:var(--muted);padding-top:1px;font-variant-numeric:tabular-nums}
+.dec .who{font-weight:600;cursor:pointer;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.dec .who:hover{text-decoration-color:var(--accent)}
+
+/* Discoveries */
+.intro{max-width:70ch;color:var(--muted);margin:0 0 20px}
+.disc{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr));gap:14px}
+article.d{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:grid;gap:10px;align-content:start}
+article.d h2{font:400 23px/1.15 var(--f-display);margin:0;text-wrap:balance}
+article.d p{margin:0;font-size:14.5px}
+article.d .from{font:400 11.5px/1.5 var(--f-mono);color:var(--muted)}
+article.d .stat{font:500 10.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--lead)}
+article.d.fix .stat{color:var(--accent)}
+h2.sec{font:400 30px/1.1 var(--f-display);margin:34px 0 6px}
+ul.fixes{margin:0;padding-left:18px;display:grid;gap:8px;max-width:80ch}
+
+/* About */
+.prose{max-width:68ch}
+.prose h2{font:400 26px/1.15 var(--f-display);margin:30px 0 8px}
+.prose p,.prose li{color:var(--ink)}
+.prose code{font:400 13px var(--f-mono);background:var(--shade);padding:1px 5px;border-radius:4px}
+.err{padding:30px;color:var(--lead)}
+
+@media (max-width:640px){
+  .stage{height:calc(100vh - 230px);min-height:420px}
+  .dec{grid-template-columns:1fr;gap:6px}
+  .viewas{width:100%}
+  .viewas select{flex:1;max-width:none}
+  h1{font-size:34px}
+}
+@media (prefers-reduced-motion:no-preference){ #vp.anim{transition:transform .35s ease} }
+</style>
+</head>
+<body>
+
+
+<header class="top wrap">
+  <div class="eyebrow">Family history · compiled from Ancestry.com</div>
+  <h1>The Ostrander <span class="amp">&amp;</span> Hruska Family</h1>
+  <p class="lede">Everyone in our two Ancestry trees, merged into one, going back five generations to Bohemia and Dakota Territory. Tap anyone to see their records, the census pages behind them, and the leads Ancestry has found that nobody has checked yet.</p>
+  <div class="stats" id="stats"></div>
+</header>
+<div class="bar wrap">
+  <div class="bar-in">
+    <nav class="tabs" aria-label="Views">
+      <a href="#tree" data-v="tree">Family chart</a>
+      <a href="#people" data-v="people">Everyone</a>
+      <a href="#timeline" data-v="timeline">Timeline</a>
+      <a href="#discoveries" data-v="discoveries">Discoveries</a>
+      <a href="#about" data-v="about">About this data</a>
+    </nav>
+    <label class="viewas" for="viewas">Relationships to
+      <select id="viewas"></select>
+    </label>
+  </div>
+</div>
+
+<main class="wrap">
+  <section class="view" id="v-tree" hidden>
+    <div class="stage">
+      <svg id="tree" role="img" aria-label="Family chart. Drag to move, scroll or pinch to zoom, select a person for details."><g id="vp"></g></svg>
+      <div class="tools">
+        <button id="zin" aria-label="Zoom in">+</button>
+        <button id="zout" aria-label="Zoom out">−</button>
+        <button id="zfit" aria-label="Fit whole family" title="Fit whole family">⤢</button>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i class="sw sel"></i>Selected person, with their direct line highlighted</span>
+      <span><i class="sw gh"></i>Possible relative from a hint (not in the tree yet)</span>
+      <span><i class="sw nc"></i>In the Ancestry tree but not connected</span>
+      <span><i class="dot"></i>Living</span>
+      <span><i class="hintpill">12</i>Unreviewed Ancestry hints</span>
+    </div>
+  </section>
+
+  <section class="view" id="v-people" hidden>
+    <div class="ptools">
+      <input id="q" type="search" placeholder="Search names, places, records…" aria-label="Search people">
+      <select id="sort" aria-label="Sort by">
+        <option value="birth">Sort: oldest first</option>
+        <option value="name">Sort: surname</option>
+        <option value="leads">Sort: most hints</option>
+      </select>
+    </div>
+    <div class="tbl"><table><thead><tr><th>Name</th><th>Lived</th><th>Born in</th><th>Records</th><th>Hints</th><th>Ancestry tree</th></tr></thead><tbody id="ptbody"></tbody></table></div>
+  </section>
+
+  <section class="view" id="v-timeline" hidden>
+    <div class="life" id="life"></div>
+    <p class="cap">Solid bars are dates recorded in the tree. Striped bars extend a life using death or birth dates from Ancestry hints (Find a Grave, death records), which still need checking. Faded bars mean the end date is unknown.</p>
+    <div id="events" style="margin-top:22px"></div>
+  </section>
+
+  <section class="view" id="v-discoveries" hidden>
+    <p class="intro">Ancestry has 261 unreviewed hints on these trees: records, other members' trees and photos. Most of them come from paid record collections, so nobody has opened them yet. Read together, they point to the findings below. Treat each one as a lead to confirm on Ancestry before adding it to the tree.</p>
+    <div class="disc" id="disc"></div>
+    <h2 class="sec">Things the tree may have wrong</h2>
+    <p class="intro">Places where the tree disagrees with the hints or with itself.</p>
+    <ul class="fixes" id="fixes"></ul>
+  </section>
+
+  <section class="view prose" id="v-about" hidden></section>
+</main>
+
+<aside id="panel" hidden aria-label="Person details"></aside>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const yr=s=>{const m=String(s??'').match(/(1[6-9]\d\d|20\d\d)/);return m?+m[1]:null};
+let D,P,ROOT,viewer,sel=null;
+
+/* Hand-laid chart positions: [slot, row]. Rows are generations. */
+const LAYOUT={
+ '6485699760':[7.5,0],'6485699764':[8.5,0],
+ '6485713000':[5.5,1],'6485713001':[6.5,1],'6485661475':[7.5,1],'6485661482':[8.5,1],'6485699768':[9.5,1],'6485699769':[10.5,1],
+ '6485548172':[-1.5,1],'6485548170':[-0.5,1],
+ '46580691592':[1.5,2],'46580691593':[2.5,2],'46580758583':[4,2],'46580705910':[5,2],'6485661483':[6,2],'6485661485':[7,2],'6485661487':[8,2],'6485672266':[9,2],'6485672273':[10,2],'6485672270':[11,2],
+ '46580705389':[0,3],'46580705437':[1,3],'46580705464':[2,3],'46580705500':[3,3],'46580691591':[4,3],'46580695165':[5,3],
+ '46580759581':[3.5,4],'46580759692':[4.5,4],'46580691590':[5.5,4]
+};
+const GHOSTS=[
+ {id:'g-charles',name:'Charles F. Ostrander',life:'b. abt 1902, Oklahoma?',sex:'M',at:[1,1]},
+ {id:'g-caroline',name:'Caroline Ostrander',life:'b. abt 1903, Ohio?',sex:'F',at:[2,1]}
+];
+const ROWLAB=['Born 1850s','Born 1878–1916','Born 1909–1937','Born 1960s','Born 1980s'];
+const UNCONNECTED=['6485548172','6485548170'];
+
+/* Dates found in hints (Find a Grave, death records, member trees). Used for the timeline only, drawn as unconfirmed. */
+const LEADDATES={
+ '6485699760':{b:1853,d:1913},'6485699764':{b:1856},'6485661475':{b:1884,d:1970},'6485661482':{b:1884,d:1946},
+ '6485661483':{b:1909,d:2000},'6485661485':{b:1914,d:1987},'6485661487':{b:1917,d:2005},'6485672266':{b:1922,d:2013},
+ '6485672270':{b:1924,d:2012},'6485672273':{b:1924,d:2017},'6485699768':{b:1892,d:1973},'6485699769':{d:1970},
+ '6485713000':{b:1879},'6485548172':{b:1914,d:1992},'6485548170':{d:2013},'46580758583':{d:1995},
+ '46580705437':{b:1963}
+};
+
+const DISC=[
+ {id:'d-kenneth',title:'Kenneth and Ruby Ostrander are probably a different Ostrander family',people:['6485548172','6485548170','46580691592'],
+  body:`The older tree starts from Kenneth P. Ostrander (born 1914, Fullerton, Nebraska) and his wife Ruby, but nothing links them to Grandpa Larry. Their 1950 census household in Tacoma, Washington lists a son <b>Larry W.</b>, with Lyle K. and Kendra L. Our Larry was <b>Larry Earl</b>, born 10 May 1934 in Austin, Minnesota, two years before Kenneth and Ruby married on 12 Nov 1936 in Fullerton. In 1950 he was living in Miami County, Kansas with different parents (see the next card).`,
+  from:'1950 U.S. Census · Newspapers.com Marriage Index · marriage document photo · Find a Grave',stat:'Strong lead'},
+ {id:'d-larry',title:'Grandpa Larry’s parents were probably Charles F. and Caroline Ostrander',people:['46580691592'],
+  body:`The 1950 census shows Larry E. Ostrander (indexed as “Olstrander”), born about 1935 in Minnesota, in Valley Township, Miami County, Kansas, with father <b>Charles F.</b>, mother <b>Caroline</b>, and siblings Paul Duane, Charles C., Wiley J., Betty L., Shirley J. and a Marjorie. Another member’s “Burton Family Tree” gives Larry Earl’s father as born about 1902 in Oklahoma, died 1951, and his mother as born 1903 in Ohio. They are drawn as dashed cards above Larry on the chart.`,
+  from:'1950 U.S. Census (hint on Larry) · Burton Family Tree · Korean War draft card',stat:'Strong lead'},
+ {id:'d-rosemary',title:'Grandma Rosemary was probably born Rosemary Fowler',people:['46580691593'],
+  body:`Larry and Rosemary share a headstone in Antioch, Miami County, Kansas, captioned “RM Fowler &amp; LE Ostrander.” A 1940 census lists a Rose M. Fowler, born about 1938 in South Dakota, in Minnehaha County, and a Washington yearbook has a Rose Mary Fowler, which fits the 1955 Seattle wedding. Find a Grave gives her birth as <b>20 May 1937</b>. A 1950 census entry for a Rose M. Edwards, born about 1938 in South Dakota, living in Odessa, Texas with James E. and Iva E. Edwards, might be her in a stepfamily. That one is unconfirmed.`,
+  from:'Find a Grave · headstone photo · 1940 & 1950 U.S. Census · U.S. School Yearbooks',stat:'Strong lead'},
+ {id:'d-bohemia',title:'The Hruskas came from Bohemia by way of Dakota Territory',people:['6485699760','6485699764'],
+  body:`John Hruska (born 1853 or June 1854) and Mary, born July 1856, were both born in Bohemia, now the Czech Republic. They married in 1876 and arrived in the U.S. around 1892, by the tree’s count. The 1880 census already puts them in Bon Homme County, Dakota Territory, home of the Czech settlement at Tabor. By 1900 they were in Newburgh, Cuyahoga County, Ohio, and by 1910 in Mooney, Polk County, Missouri. A Missouri death certificate records John’s death on <b>7 Nov 1913</b> in Polk County, and he is buried in Bolivar. Member trees give Mary’s maiden name as <b>Wartz</b>.`,
+  from:'1880/1900/1910 U.S. Census · Missouri Death Certificates · Find a Grave · member trees',stat:'Lead'},
+ {id:'d-nerud',title:'Mary G. Hruska was born Mary Gertrude Nerud',people:['6485661482'],
+  body:`A 1900 census lists a <b>Mary G. Nerud</b>, born 1884 in Nebraska, in Greene County, Missouri, near where the Hruskas settled. A Geneanet tree names Angela’s mother as Mary Gertrude Nerud, and Find a Grave calls her Mary Gertrude Hruska. Member trees give 17 Mar 1884 for her birth and 17 Dec 1946 for her death.`,
+  from:'1900 U.S. Census · Geneanet Community Trees · Find a Grave · member trees',stat:'Lead'},
+ {id:'d-frank',title:'Frank Fred Hruska, 1884–1970',people:['6485661475'],
+  body:`Find a Grave and a member tree agree: Frank Fred Hruska was born <b>18 Nov 1884</b> in South Dakota and died <b>23 Feb 1970</b> in Paola, Miami County, Kansas, where he is buried. Hints add his World War I draft card (Polk County, Missouri), a 1942 “old man’s” draft card, and a 1950 census in Marysville, Miami County, with Phillip and Rosemary at home. There is also a headstone photo.`,
+  from:'Find a Grave · WWI & WWII draft cards · 1900/1940/1950 U.S. Census',stat:'Lead'},
+ {id:'d-twins',title:'Phillip and Angela were probably twins',people:['6485672273','6485672270'],
+  body:`The tree estimates both as born about 1925. Their Find a Grave entries both give <b>4 August 1924</b>, and Phillip’s says Morrisville, Polk County, Missouri. Angela Patsy died 14 Apr 2012 and Phillip D. died 10 Jan 2017 in Ottawa, Kansas. Both are buried in Paola.`,
+  from:'Find a Grave · Geneanet · 1940 U.S. Census',stat:'Lead'},
+ {id:'d-sibs',title:'Grandpa Stephen’s brothers and sisters, with their married names',people:['6485661483','6485661485','6485661487','6485672266','46580705910'],
+  body:`<b>Paul Victor</b> (8 Jun 1909 – 4 Nov 2000) married Frances Louise Cosby in Arkansas. <b>Henry J.</b> (27 Apr 1914 – 1987) married Anna J. <b>Rosemary A.</b> (11 Feb 1917 – 15 Jun 2005) married Harry Stephen Bulis. <b>Marcella C.</b> (26 Mar 1922 – 19 Aug 2013) married C. B. White. Nearly all of them are buried in Paola, Kansas. Stephen himself has a World War II Army enlistment record under “Steve Hruska.”`,
+  from:'Find a Grave · marriage records · obituary indexes · WWII enlistment records',stat:'Lead'},
+ {id:'d-aunts',title:'Frank’s sisters married in South Dakota, Montana and Missouri',people:['6485699768','6485699769','6485713001','6485713000'],
+  body:`<b>Lidmilla Victoria</b> (21 Sep 1892, Tabor, South Dakota – 7 Apr 1973, Lewistown, Montana) married Lambert A. Benes. <b>Christina K.</b> (about 1895 – 17 Dec 1970, Rapid City, South Dakota) married Adolph G. Pesek. <b>Frances “Fanny”</b> married Charles Ruzicka in Polk County, Missouri. <b>Mary</b> was born in January 1879 in South Dakota.`,
+  from:'Find a Grave · Montana & South Dakota marriage and death records · U.S. Census',stat:'Lead'},
+ {id:'d-stephen',title:'Georgann’s mother is still missing from the tree',people:['46580705910','46580758583','46580695165'],
+  body:`Stephen married Mary Dolores Grandy on 9 Sep 1950 in Kansas City. She was born 30 May 1928, died 6 Nov 1995, and is buried in Paola. Find a Grave names her mother as Sophia Dorothy Gilmore. The tree lists Mary only as a step-grandmother, so Georgann’s mother still needs to be found. One clue: a U.S. Army Transport passenger record lists Stephen with a wife named <b>“Mrs. Mary H. Hruska.”</b>`,
+  from:'Missouri marriage records · Find a Grave · Army Transport Service passenger lists',stat:'Open question'},
+ {id:'d-miami',title:'Miami County, Kansas is where the two families meet',people:['46580691592','46580705910','6485661475'],
+  body:`The Hruskas moved to Ten Mile Township, Miami County by 1930 and stayed around Paola for decades. In 1950 Larry Ostrander’s family was in Valley Township in the same county. Larry and Rosemary are buried in Antioch and Stephen in Paola, both in Miami County.`,
+  from:'U.S. Census 1930–1950 · Find a Grave',stat:'Pattern'}
+];
+const FIXES=[
+ ['Marcella, Angela and Phillip Hruska are marked <b>living</b>, but Find a Grave shows they died in 2013, 2012 and 2017.',['6485672266','6485672270','6485672273']],
+ ['Stephen Hruska is in <b>both trees</b>, as “Stephen J Hruska” (born abt 1920) and “Stephen John Hruska” (1919–2015). Both cite the same 1920 and 1930 census lines. This page merges them.',['46580705910']],
+ ['Several Hruska birth years are estimates from the census and run a year late: Paul (1909, not 1910), Henry (1914, not 1915), Rosemary (1917, not 1918), Phillip and Angela (1924, not 1925).',['6485661483','6485661485','6485661487']],
+ ['“Carmen Walken”: public records spell the married name <b>Wolken</b> (Carmen Susanna/Suzanne Ostrander married Steven Blaine Wolken).',['46580705464']],
+ ['“Mary Deloresm Grandy”: records say Mary <b>Dolores</b> (or Deloris) Grandy, and her gender isn’t set in the tree.',['46580758583']],
+ ['Georgann’s birthplace is Kansas in the tree, but a Missouri Birth Registers hint exists for a Georgann Pugh.',['46580695165']],
+ ['John Hruska’s death year: the Missouri death certificate says 1913, the Find a Grave index says 1918. His birth is 1853 in the tree and on Find a Grave, June 1854 in a member tree.',['6485699760']]
+];
+
+/* ---------- data helpers ---------- */
+const nameOf=p=>p? [p.given,p.surname,p.suffix].filter(Boolean).join(' ') : '';
+const shortName=id=>(P[id]?.given?.split(' ')[0]||'')+(/ Jr$/.test(P[id]?.surname||'')?' Jr':'');
+function vital(p,t){const f=(p.facts||[]).find(f=>f.t===t&&!f.alt);return f?{d:f.d,p:f.p,y:yr(f.d)}:null}
+function birthY(p){return vital(p,'Birth')?.y ?? LEADDATES[p.id]?.b ?? null}
+function ancestors(id){const m=new Map([[id,0]]),q=[id];while(q.length){const c=q.shift();for(const x of (P[c]?.parents||[]))if(!m.has(x)){m.set(x,m.get(c)+1);q.push(x)}}return m}
+function descendants(id){const s=new Set(),q=[id];while(q.length){const c=q.shift();for(const x of (P[c]?.children||[]))if(!s.has(x)){s.add(x);q.push(x)}}return s}
+const G=(s,m,f,n)=>s==='M'?m:s==='F'?f:n;
+const greats=n=>n<=0?'':n===1?'great-':n===2?'great-great-':`${n}× great-`;
+function blood(a,b){
+  if(a===b) return 'self';
+  const A=ancestors(a),B=ancestors(b),s=P[b].sex;
+  if(A.has(b)){const n=A.get(b);return n===1?G(s,'father','mother','parent'):greats(n-2)+'grand'+G(s,'father','mother','parent')}
+  if(B.has(a)){const n=B.get(a);return n===1?G(s,'son','daughter','child'):greats(n-2)+'grand'+G(s,'son','daughter','child')}
+  let best=null;for(const [c,da] of A){if(B.has(c)){const db=B.get(c);if(!best||da+db<best.da+best.db)best={da,db}}}
+  if(!best) return null;
+  const {da,db}=best;
+  if(da===1&&db===1){const pa=P[a].parents,pb=P[b].parents,sh=pa.filter(x=>pb.includes(x)).length;return (sh===1&&pa.length>1&&pb.length>1?'half-':'')+G(s,'brother','sister','sibling')}
+  if(da===1) return greats(db-3)+(db>=3?'grand':'')+G(s,'nephew','niece','niece/nephew');
+  if(db===1) return greats(da-2)+G(s,'uncle','aunt','aunt/uncle');
+  const deg=Math.min(da,db)-1,rem=Math.abs(da-db),ord=['','1st','2nd','3rd','4th','5th'][deg]||deg+'th';
+  return ord+' cousin'+(rem?(rem===1?' once removed':rem===2?' twice removed':` ${rem}× removed`):'');
+}
+const comp={};
+function components(){let c=0;for(const id in P){if(comp[id]!=null)continue;const q=[id];comp[id]=c;while(q.length){const x=q.shift();for(const y of [...P[x].parents,...P[x].children,...P[x].spouses])if(comp[y]==null){comp[y]=c;q.push(y)}}c++}}
+function relation(a,b){
+  if(!P[a]||!P[b]) return '';
+  const r=blood(a,b); if(r) return r==='self'?(a===viewer?'you':'self'):r;
+  const s=P[b].sex;
+  if(P[a].spouses.includes(b)) return G(s,'husband','wife','spouse');
+  for(const x of P[b].spouses){const rx=blood(a,x);if(rx&&rx!=='self'){
+    const A=ancestors(a);if(A.has(x)){const n=A.get(x);return n===1?G(s,'stepfather','stepmother','stepparent'):'step-'+greats(n-2)+'grand'+G(s,'father','mother','parent')}
+    if(/^(half-)?(brother|sister|sibling)$/.test(rx)) return G(s,'brother-in-law','sister-in-law','sibling-in-law');
+    if(/^(son|daughter|child)$/.test(rx)) return G(s,'son-in-law','daughter-in-law','child-in-law');
+    return `${rx}’s ${G(s,'husband','wife','spouse')}`}}
+  for(const sp of P[a].spouses){const rs=blood(sp,b);if(rs&&rs!=='self'){
+    if(/^(father|mother|parent)$/.test(rs)) return G(s,'father-in-law','mother-in-law','parent-in-law');
+    if(/^(brother|sister|sibling)$/.test(rs)) return G(s,'brother-in-law','sister-in-law','sibling-in-law');
+    return `${shortName(sp)}’s ${rs}`}}
+  return comp[a]===comp[b]?'related by marriage':'not connected';
+}
+function siblings(id){const ps=P[id].parents;return Object.keys(P).filter(x=>x!==id&&P[x].parents.some(p=>ps.includes(p)))}
+const shortSrc=t=>String(t||'').replace('United States Federal Census','U.S. Census').replace(/^U\.S\., /,'').replace(/, \d{4}s?-(Current|\d{4})$/,'');
+
+/* ---------- tree ---------- */
+const SX=200,SY=170,CW=178,CH=84;
+const svg=$('#tree'),vp=$('#vp');
+let vt={k:1,x:0,y:0};
+const posOf=id=>{const g=GHOSTS.find(g=>g.id===id);const l=g?g.at:LAYOUT[id];return {x:l[0]*SX,y:l[1]*SY}};
+function card(id){
+  const g=GHOSTS.find(x=>x.id===id),p=P[id],{x,y}=posOf(id);
+  const nm=g?g.name:nameOf(p),life=g?g.life:(p.life||'dates unknown');
+  const nc=UNCONNECTED.includes(id);
+  const rel=g?'possible parent of Larry':nc?'not connected':relation(viewer,id);
+  const lc=g?0:(p.leads||[]).length;
+  const t=s=>s.length>22?s.slice(0,21)+'…':s;
+  return `<g class="card${g?' ghost':''}${nc?' nc':''}" data-id="${id}" tabindex="0" role="button" aria-label="${esc(nm)}, ${esc(life)}, ${esc(rel)}" transform="translate(${x},${y})">
+    <rect class="bg" width="${CW}" height="${CH}" rx="8"/>
+    <text class="nm" x="12" y="25">${esc(t(nm))}</text>
+    <text class="lf" x="12" y="45">${esc(life)}</text>
+    <text class="rl" x="12" y="69">${esc(t(rel))}</text>
+    ${!g&&p.living?`<circle class="lv" cx="${CW-13}" cy="41" r="4"><title>Living</title></circle>`:''}
+    ${lc?`<g class="hb" transform="translate(${CW-(String(lc).length*6+12)-(p.living?20:8)},33)"><rect width="${String(lc).length*6+10}" height="15" rx="3"/><text x="5" y="11">${lc}</text><title>${lc} unreviewed hints</title></g>`:''}
+  </g>`;
+}
+let EDGES=[];
+function drawTree(){
+  const ids=Object.keys(LAYOUT).filter(id=>P[id]);
+  let h='';
+  // row labels
+  const minX=Math.min(...ids.map(i=>LAYOUT[i][0]))*SX-24;
+  ROWLAB.forEach((l,i)=>{h+=`<text class="rowlab" x="${minX}" y="${i*SY+CH/2+4}" text-anchor="end">${l}</text>`});
+  h+=`<text class="note" x="${-1.5*SX}" y="${SY-14}">Not linked to the rest of the tree</text>`;
+  h+=`<text class="note" x="${1*SX}" y="${SY-14}" fill="var(--lead)">Possible parents, from a 1950 census hint</text>`;
+  // couple lines
+  const done=new Set();
+  for(const id of ids)for(const s of P[id].spouses){if(!LAYOUT[s])continue;const k=[id,s].sort().join();if(done.has(k))continue;done.add(k);
+    const a=posOf(id),b=posOf(s);if(a.y!==b.y||Math.abs(a.x-b.x)>SX*1.01)continue;const L=Math.min(a.x,b.x),R=Math.max(a.x,b.x);
+    h+=`<line class="mar" x1="${L+CW}" y1="${a.y+CH/2}" x2="${R}" y2="${a.y+CH/2}"/>`}
+  // parent → child paths
+  EDGES=[];
+  for(const c of ids){const ps=P[c].parents.filter(p=>LAYOUT[p]);if(!ps.length)continue;
+    let mx,sy;if(ps.length===2){const a=posOf(ps[0]),b=posOf(ps[1]);mx=(a.x+b.x)/2+CW/2;sy=a.y+CH/2}else{const a=posOf(ps[0]);mx=a.x+CW/2;sy=a.y+CH}
+    const cp=posOf(c),cy=cp.y,by=cy-30;EDGES.push({c,ps});
+    h+=`<path class="edge" data-c="${c}" data-p="${ps.join(' ')}" d="M${mx},${sy} V${by} H${cp.x+CW/2} V${cy}"/>`}
+  // ghost link to Larry
+  {const a=posOf('g-charles'),b=posOf('g-caroline'),l=posOf('46580691592');const mx=(a.x+b.x)/2+CW/2;
+   h+=`<line class="mar" x1="${a.x+CW}" y1="${a.y+CH/2}" x2="${b.x}" y2="${b.y+CH/2}" style="stroke:var(--lead);stroke-dasharray:4 3"/>`;
+   h+=`<path class="edge gh" d="M${mx},${a.y+CH/2} V${l.y-30} H${l.x+CW/2} V${l.y}"/>`}
+  h+=ids.map(card).join('')+GHOSTS.map(g=>card(g.id)).join('');
+  vp.innerHTML=h;
+  highlight();
+}
+function highlight(){
+  const on=new Set();
+  if(sel&&P[sel]){const A=ancestors(sel),De=descendants(sel);A.forEach((_,k)=>on.add(k));De.forEach(k=>on.add(k));P[sel].spouses.forEach(s=>on.add(s))}
+  $$('#vp .card').forEach(c=>{const id=c.dataset.id;c.classList.toggle('sel',id===sel);c.classList.toggle('dim',!!sel&&P[sel]&&!on.has(id))});
+  const A=sel&&P[sel]?ancestors(sel):new Map(),De=sel&&P[sel]?descendants(sel):new Set();
+  const inl=x=>x===sel||A.has(x)||De.has(x);
+  $$('#vp path.edge[data-c]').forEach(e=>{const c=e.dataset.c,ps=e.dataset.p.split(' ');e.classList.toggle('on',!!sel&&inl(c)&&ps.some(inl)&&(A.has(c)||c===sel||De.has(c)))});
+  // keep highlighted paths on top
+  $$('#vp path.edge.on').forEach(e=>vp.insertBefore(e,vp.querySelector('.card')));
+}
+function apply(anim){vp.classList.toggle('anim',!!anim);vp.setAttribute('transform',`translate(${vt.x},${vt.y}) scale(${vt.k})`)}
+function fit(anim){const bb=vp.getBBox(),r=svg.getBoundingClientRect();if(!r.width)return;const pad=28;const k=Math.min((r.width-2*pad)/bb.width,(r.height-2*pad)/bb.height,1);vt={k,x:(r.width-bb.width*k)/2-bb.x*k,y:(r.height-bb.height*k)/2-bb.y*k};apply(anim)}
+function startView(){const r=svg.getBoundingClientRect(),k=r.width<560?.62:.72,id=LAYOUT[viewer]?viewer:ROOT,p=posOf(id);
+  vt={k,x:r.width/2-(p.x+CW/2)*k,y:r.height*.62-(p.y+CH/2)*k};apply(false)}
+function zoomAt(f,cx,cy){const k=Math.max(.15,Math.min(2.4,vt.k*f));f=k/vt.k;vt.x=cx-(cx-vt.x)*f;vt.y=cy-(cy-vt.y)*f;vt.k=k;apply()}
+function center(id){if(!LAYOUT[id]&&!GHOSTS.some(g=>g.id===id))return;const r=svg.getBoundingClientRect(),p=posOf(id);const k=Math.max(vt.k,.7);const panelW=$('#panel').hidden||innerWidth<700?0:Math.min(470,innerWidth);
+  vt={k,x:(r.width-panelW)/2-(p.x+CW/2)*k,y:r.height/2-(p.y+CH/2)*k};apply(true)}
+(function panzoom(){
+  const pts=new Map();let start=null,moved=0,downCard=null,pinch=null;
+  const rel=e=>{const r=svg.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top]};
+  svg.addEventListener('pointerdown',e=>{pts.set(e.pointerId,rel(e));downCard=e.target.closest('.card');moved=0;start={x:vt.x,y:vt.y,p:rel(e)};
+    if(pts.size===2){const [a,b]=[...pts.values()];pinch={d:Math.hypot(a[0]-b[0],a[1]-b[1]),k:vt.k}}svg.setPointerCapture(e.pointerId)});
+  svg.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;const p=rel(e);pts.set(e.pointerId,p);
+    if(pts.size===2&&pinch){const [a,b]=[...pts.values()];const d=Math.hypot(a[0]-b[0],a[1]-b[1]);zoomAt(pinch.k*d/pinch.d/vt.k,(a[0]+b[0])/2,(a[1]+b[1])/2);moved=99;return}
+    const dx=p[0]-start.p[0],dy=p[1]-start.p[1];moved=Math.max(moved,Math.hypot(dx,dy));if(moved>4){svg.classList.add('drag');vt.x=start.x+dx;vt.y=start.y+dy;apply()}});
+  const up=e=>{pts.delete(e.pointerId);svg.classList.remove('drag');if(pts.size<2)pinch=null;
+    if(e.type==='pointerup'&&moved<=4&&downCard){select(downCard.dataset.id,false)}
+    if(pts.size===1){const p=[...pts.values()][0];start={x:vt.x,y:vt.y,p}}};
+  svg.addEventListener('pointerup',up);svg.addEventListener('pointercancel',up);
+  svg.addEventListener('wheel',e=>{e.preventDefault();const [x,y]=rel(e);zoomAt(Math.exp(-e.deltaY*(e.ctrlKey?.01:.0018)),x,y)},{passive:false});
+  svg.addEventListener('keydown',e=>{const c=e.target.closest('.card');if(c&&(e.key==='Enter'||e.key===' ')){e.preventDefault();select(c.dataset.id,true)}});
+  $('#zin').onclick=()=>{const r=svg.getBoundingClientRect();zoomAt(1.25,r.width/2,r.height/2)};
+  $('#zout').onclick=()=>{const r=svg.getBoundingClientRect();zoomAt(.8,r.width/2,r.height/2)};
+  $('#zfit').onclick=()=>fit(true);
+})();
+
+/* ---------- person drawer ---------- */
+function plink(id){const p=P[id];if(!p)return '';return `<button class="plink" data-go="${id}">${esc(nameOf(p))}<small>${esc(p.life||'')}</small></button>`}
+function leadHTML(L){
+  if(L.kind==='photo') return `<li class="lead"><span class="lk">Photo${L.cat?' · '+esc(L.cat):''} from another member</span><b>${esc(L.title||'Untitled photo')}</b>${[L.date,L.place].filter(Boolean).length?`<div class="m">${esc([L.date,L.place].filter(Boolean).join(' · '))}</div>`:''}${L.desc?`<div>${esc(L.desc)}</div>`:''}</li>`;
+  const ev=(L.events||[]).map(e=>`${esc(e.t)}: ${esc([e.d,e.p].filter(Boolean).join(', '))}`).join(' · ');
+  const fam=(L.family||[]).map(f=>`${esc(f.rel)}: ${f.names&&f.names.length?esc(f.names.join(', ')):'<i>name hidden</i>'}${f.events&&f.events.length?' ('+f.events.map(e=>esc(e.t+' '+[e.d,e.p].filter(Boolean).join(', '))).join('; ')+')':''}`).join(' · ');
+  return `<li class="lead"><span class="lk">${L.kind==='tree'?'Another member’s tree':esc(L.cat||'Record')}</span><b>${esc(L.db)}${L.tree?` · “${esc(L.tree)}”`:''}</b>${L.name?`<div>Recorded as <i>${esc(L.name)}</i></div>`:''}${ev?`<div>${ev}</div>`:''}${fam?`<div class="m">${fam}</div>`:''}${L.link?`<a href="${esc(L.link)}" target="_blank" rel="noopener">Find a Grave memorial ↗</a>`:''}</li>`;
+}
+function factSortKey(p,f){const y=yr(f.d);if(y)return y+(f.t==='Birth'?-.5:f.t==='Death'?.4:0);if(f.t==='Birth')return -1e4;if(f.t==='Burial')return (vital(p,'Death')?.y||9000)+.5;return 9999}
+function ghostPanel(id){
+  const g=GHOSTS.find(x=>x.id===id);
+  return `<button class="close" aria-label="Close">×</button><div class="eyebrow">Possible relative · not in the tree</div><h2 class="pn">${esc(g.name)}</h2>
+   <div class="chips"><span class="chip lead">${esc(g.life)}</span><span class="chip lead">possible ${g.sex==='M'?'father':'mother'} of Larry</span></div>
+   <p>${DISC.find(d=>d.id==='d-larry').body}</p><p class="cite">Source of this lead: ${esc(DISC.find(d=>d.id==='d-larry').from)}</p>
+   <div class="fam" style="margin-top:14px"><div><span class="k">Child</span><span class="plinks">${plink('46580691592')}</span></div></div>`;
+}
+function personPanel(id){
+  const p=P[id],rel=relation(viewer,id),nc=UNCONNECTED.includes(id);
+  const facts=(p.facts||[]).filter(f=>f.t!=='Name'||f.v).slice().sort((a,b)=>factSortKey(p,a)-factSortKey(p,b));
+  const sibs=siblings(id),disc=DISC.filter(d=>d.people.includes(id)),fixes=FIXES.filter(f=>f[1].includes(id));
+  const leads=p.leads||[],order={record:0,tree:1,photo:2};
+  const sl=leads.slice().sort((a,b)=>order[a.kind]-order[b.kind]||(b.link?1:0)-(a.link?1:0));
+  const famRow=(k,arr)=>arr.length?`<div><span class="k">${k}</span><span class="plinks">${arr.map(plink).join('')}</span></div>`:'';
+  return `<button class="close" aria-label="Close">×</button>
+  <div class="eyebrow">${esc(p.trees.join(' · '))}</div>
+  <h2 class="pn">${esc(nameOf(p))}</h2>
+  <div class="chips">
+    <span class="chip">${esc(p.life||'dates unknown')}</span>
+    ${rel&&rel!=='not connected'?`<span class="chip">${esc(rel)}${viewer!==id&&rel!=='you'?' of '+esc(shortName(viewer)):''}</span>`:''}
+    ${nc?'<span class="chip gray">not connected to the family</span>':''}
+    ${p.living?'<span class="chip gray">living</span>':''}
+    ${leads.length?`<span class="chip lead">${leads.length} unreviewed hints</span>`:''}
+  </div>
+  ${p.mergedFrom?`<p class="cite">${esc(p.mergedFrom)}</p>`:''}
+  ${p.narr?`<div class="narr"><small>Ancestry’s summary</small>${esc(p.narr)}</div>`:''}
+  ${disc.length||fixes.length?`<div class="callout">${disc.map(d=>`<div><b>Discovery:</b> <a data-disc="${d.id}">${esc(d.title)}</a></div>`).join('')}${fixes.map(f=>`<div><b>Check:</b> ${f[0]}</div>`).join('')}</div>`:''}
+  <h3>Life events <em>${facts.length}</em></h3>
+  ${facts.length?`<ol class="facts">${facts.map(f=>`<li><span class="yr">${yr(f.d)??'—'}</span><div><span class="ft">${esc(f.t)}</span>${f.alt?'<span class="alt">alternate</span>':''}
+    <div class="fd">${esc([f.v&&f.t!=='Name'?f.v:(f.t==='Name'?f.v:''),f.d,f.p].filter(Boolean).join(' · '))}</div>
+    ${f.desc?`<div class="fd">${esc(f.desc)}</div>`:''}
+    ${f.src&&f.src.length?`<div class="cite">${f.src.map(s=>esc(shortSrc(s.split(' — ')[0]))).filter((v,i,a)=>a.indexOf(v)===i).join(' · ')}</div>`:''}</div></li>`).join('')}</ol>`:'<p class="fd">No events recorded yet.</p>'}
+  <h3>Family</h3>
+  <div class="fam">${famRow('Parents',p.parents)}${famRow(p.spouses.length>1?'Spouses':'Spouse',p.spouses)}${famRow('Children',p.children)}${famRow('Siblings',sibs)}
+   ${!p.parents.length&&!p.spouses.length&&!p.children.length?'<p class="fd">No family linked in the tree.</p>':''}
+   ${p.suggestedRelatives&&p.suggestedRelatives.length?`<p class="fd">Ancestry also suggests possible ${p.suggestedRelatives.map(r=>r.toLowerCase()+'s').join(' and ').replace('fathers','father').replace('mothers','mother')} from other trees.</p>`:''}</div>
+  <h3>Records in the tree <em>${p.sources.length}</em></h3>
+  ${p.sources.length?`<ul class="srcs">${p.sources.map(s=>`<li><b>${esc(s.title)}</b>${s.detail?`<div class="cite">${esc(s.detail)}</div>`:''}</li>`).join('')}</ul>`:'<p class="fd">No records attached yet.</p>'}
+  ${sl.length?`<h3>Unreviewed hints <em>${sl.length}</em></h3>
+   <p class="fd" style="margin:0 0 10px">Ancestry matched these to ${esc(p.given)} automatically. Some may be someone else with the same name.</p>
+   <ul class="leads">${sl.slice(0,5).map(leadHTML).join('')}</ul>
+   ${sl.length>5?`<details class="more"><summary>Show ${sl.length-5} more hints</summary><ul class="leads">${sl.slice(5).map(leadHTML).join('')}</ul></details>`:''}`:''}`;
+}
+function openPanel(id){
+  const el=$('#panel');el.innerHTML=GHOSTS.some(g=>g.id===id)?ghostPanel(id):personPanel(id);el.hidden=false;el.scrollTop=0;
+  el.querySelector('.close').onclick=closePanel;
+  el.querySelector('.close').focus({preventScroll:true});
+}
+function closePanel(){$('#panel').hidden=true;sel=null;highlight()}
+$('#panel').addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b){select(b.dataset.go,true);return}
+  const d=e.target.closest('[data-disc]');if(d){closePanel();location.hash='discoveries';setTimeout(()=>{const t=document.getElementById(d.dataset.disc);t&&t.scrollIntoView({block:'start',behavior:'smooth'})},60)}});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#panel').hidden)closePanel()});
+function select(id,doCenter){sel=id;openPanel(id);highlight();if(doCenter&&!$('#v-tree').hidden)center(id)}
+
+/* ---------- people list ---------- */
+function drawPeople(){
+  const q=$('#q').value.trim().toLowerCase(),sort=$('#sort').value;
+  let ids=Object.keys(P);
+  if(q) ids=ids.filter(id=>JSON.stringify(P[id]).toLowerCase().includes(q));
+  ids.sort((a,b)=>sort==='name'?(P[a].surname+P[a].given).localeCompare(P[b].surname+P[b].given):sort==='leads'?(P[b].leads||[]).length-(P[a].leads||[]).length:(birthY(P[a])??9999)-(birthY(P[b])??9999));
+  $('#ptbody').innerHTML=ids.map(id=>{const p=P[id],b=vital(p,'Birth');return `<tr data-go="${id}" tabindex="0"><td><div class="nm2">${esc(nameOf(p))}</div><div class="rel">${esc(UNCONNECTED.includes(id)?'not connected':relation(viewer,id))}</div></td>
+   <td class="ttag">${esc(p.life||'—')}${p.living?' · living':''}</td><td>${esc(b?.p||'—')}</td><td class="num">${p.sources.length}</td><td class="num">${(p.leads||[]).length}</td><td class="ttag">${esc(p.trees.map(t=>t.replace(' Family Tree','')).join(', '))}</td></tr>`}).join('')||'<tr><td colspan="6">Nobody matches that search.</td></tr>';
+}
+$('#q').addEventListener('input',drawPeople);$('#sort').addEventListener('change',drawPeople);
+$('#ptbody').addEventListener('click',e=>{const r=e.target.closest('[data-go]');r&&select(r.dataset.go,false)});
+$('#ptbody').addEventListener('keydown',e=>{const r=e.target.closest('[data-go]');if(r&&e.key==='Enter')select(r.dataset.go,false)});
+
+/* ---------- timeline ---------- */
+function drawTimeline(){
+  const Y0=1850,Y1=2030,NOW=2026,W=1000,LW=170,RH=22,top=26;
+  const rows=Object.keys(P).map(id=>{const p=P[id],b=vital(p,'Birth')?.y,d=vital(p,'Death')?.y,L=LEADDATES[id]||{};
+    return {id,b,d,lb:L.b,ld:L.d,s:b??L.b}}).filter(r=>r.s).sort((a,b)=>a.s-b.s);
+  const x=y=>LW+(y-Y0)/(Y1-Y0)*(W-LW-10);
+  let h=`<defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="var(--lead-soft)"/><line x1="0" y1="0" x2="0" y2="6" stroke="var(--lead)" stroke-width="2.2"/></pattern>
+   <linearGradient id="fade"><stop offset="0" stop-color="var(--accent)" stop-opacity=".55"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></linearGradient>
+   <linearGradient id="fadeL"><stop offset="0" stop-color="var(--accent)"/><stop offset="1" stop-color="var(--accent)" stop-opacity=".25"/></linearGradient></defs>`;
+  for(let y=Y0;y<=Y1;y+=10){h+=`<line class="gl" x1="${x(y)}" x2="${x(y)}" y1="${top-6}" y2="${top+rows.length*RH}" ${y%50?'stroke-opacity=".45"':''}/>`;if(y%20===10||y===1850)h+=`<text class="ax" x="${x(y)}" y="${top-11}" text-anchor="middle">${y}</text>`}
+  rows.forEach((r,i)=>{const p=P[r.id],cy=top+i*RH+RH/2,y=cy-5;
+    h+=`<text class="ln" data-go="${r.id}" x="${LW-10}" y="${cy+4}" text-anchor="end">${esc(nameOf(p).replace(/ (Jr)$/,' $1'))}</text>`;
+    const tb=r.b,td=r.d;
+    if(tb&&td) h+=`<rect class="bs" x="${x(tb)}" y="${y}" width="${x(td)-x(tb)}" height="10" rx="2"><title>${tb}–${td}</title></rect>`;
+    else if(tb&&r.ld) h+=`<rect class="bs" x="${x(tb)}" y="${y}" width="3" height="10"/><rect class="bl" x="${x(tb)}" y="${y}" width="${x(r.ld)-x(tb)}" height="10" rx="2"><title>Death ${r.ld} from a hint, unconfirmed</title></rect>`;
+    else if(!tb&&r.lb) h+=`<rect class="bl" x="${x(r.lb)}" y="${y}" width="${x(r.ld||Math.min(r.lb+70,NOW))-x(r.lb)}" height="10" rx="2"><title>Dates from hints, unconfirmed</title></rect>`;
+    else if(tb&&p.living) h+=`<rect class="bv" x="${x(tb)}" y="${y}" width="${x(NOW)-x(tb)}" height="10" rx="2"><title>Living</title></rect>`;
+    else if(tb) h+=`<rect class="bu" x="${x(tb)}" y="${y}" width="${x(Math.min(tb+70,NOW))-x(tb)}" height="10" rx="2"><title>Death date unknown</title></rect>`;
+    if(tb&&r.lb&&r.lb!==tb&&!td) {} });
+  $('#life').innerHTML=`<svg viewBox="0 0 ${W} ${top+rows.length*RH+8}" role="img" aria-label="Lifespans of everyone with a known birth year">${h}</svg>`;
+  $('#life').onclick=e=>{const t=e.target.closest('[data-go]');t&&select(t.dataset.go,false)};
+  // events by decade
+  const evs=[];const seen=new Map();
+  for(const id in P)for(const f of P[id].facts||[]){const y=yr(f.d);if(!y||f.alt||f.t==='Name')continue;const k=[f.t,f.d,f.p].join('|');
+    if((f.t==='Marriage'||f.t==='Residence')&&seen.has(k)){const e=seen.get(k);if(!e.who.includes(id))e.who.push(id);continue}
+    const e={y,t:f.t,d:f.d,p:f.p,desc:f.desc,who:[id]};evs.push(e);seen.set(k,e)}
+  evs.sort((a,b)=>a.y-b.y||(a.t==='Birth'?-1:1));
+  const byDec={};evs.forEach(e=>{(byDec[Math.floor(e.y/10)*10]=byDec[Math.floor(e.y/10)*10]||[]).push(e)});
+  $('#events').innerHTML=Object.entries(byDec).map(([d,l])=>`<div class="dec"><h4>${d}s</h4><ul>${l.map(e=>`<li><span class="yy">${e.y}</span><span>${e.who.map(w=>`<span class="who" data-go="${w}">${esc(nameOf(P[w]))}</span>`).join(' &amp; ')}: ${esc(e.t.toLowerCase())}${e.p?' in '+esc(e.p):''}${e.t==='Residence'&&e.who.length>2?` <span class="ttag">(${e.who.length} in the household)</span>`:''}</span></li>`).join('')}</ul></div>`).join('');
+  $('#events').onclick=e=>{const t=e.target.closest('[data-go]');t&&select(t.dataset.go,false)};
+}
+
+/* ---------- discoveries & about ---------- */
+function drawDisc(){
+  $('#disc').innerHTML=DISC.map(d=>`<article class="d" id="${d.id}"><span class="stat">${esc(d.stat)}</span><h2>${esc(d.title)}</h2><p>${d.body}</p>
+    <div class="plinks">${d.people.map(plink).join('')}</div><div class="from">Based on: ${esc(d.from)}</div></article>`).join('');
+  $('#fixes').innerHTML=FIXES.map(f=>`<li>${f[0]} <span class="plinks" style="display:inline-flex;vertical-align:middle">${f[1].slice(0,3).map(plink).join('')}</span></li>`).join('');
+  $('#v-discoveries').onclick=e=>{const b=e.target.closest('[data-go]');b&&select(b.dataset.go,false)};
+}
+function drawAbout(){
+  const dt=new Date(D.extracted);
+  const tr=Object.entries(D.trees).map(([n,t])=>`<li><b>${esc(n)}</b>: ${t.people} people, ${t.hints} hints</li>`).join('');
+  $('#v-about').innerHTML=`<h2>Where this came from</h2>
+  <p>Everything here was copied from two Ancestry.com family trees on ${dt.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})}:</p><ul>${tr}</ul>
+  <p>For every person, this page includes each fact and event in the tree, the records attached to it (with census roll, page and enumeration district), the family links, Ancestry’s written summary, and every hint Ancestry had waiting.</p>
+  <h2>How the two trees were combined</h2>
+  <p>The trees overlap in one person: Stephen Hruska, Georgann’s father. He is “Stephen John Hruska” (1919–2015) in Tim Jr’s tree and “Stephen J Hruska” (born about 1920) in the Ostrander Family Tree, where his parents, grandparents and siblings live. Both versions cite the same lines of the 1920 and 1930 censuses, so they are shown as one person here. That merge connects the Hruska ancestors to everyone else.</p>
+  <p>Kenneth and Ruby Ostrander are in the Ostrander Family Tree but aren’t linked to anyone. The hints suggest they belong to a different Ostrander family. See <a href="#discoveries">Discoveries</a>.</p>
+  <h2>What isn’t here</h2>
+  <ul><li>Neither tree has photos or stories uploaded.</li>
+  <li>Opening the census images and full record transcriptions needs an Ancestry subscription, so this page shows each record’s citation instead of its contents. The hints show what Ancestry could index without one.</li>
+  <li>Hints are Ancestry’s automatic guesses and are labeled as unreviewed everywhere they appear.</li>
+  <li>A Social Security number in one attached record was removed.</li></ul>
+  <h2>Privacy</h2>
+  <p>This page includes living family members. Share the link with family only.</p>`;
+}
+
+/* ---------- routing / viewer ---------- */
+const VIEWS=['tree','people','timeline','discoveries','about'];
+let treeDrawn=false;
+function route(){
+  const v=VIEWS.includes(location.hash.slice(1))?location.hash.slice(1):'tree';
+  VIEWS.forEach(x=>{$('#v-'+x).hidden=x!==v});
+  $$('nav.tabs a').forEach(a=>a.toggleAttribute('aria-current',a.dataset.v===v)||a.dataset.v===v&&a.setAttribute('aria-current','page'));
+  $$('nav.tabs a').forEach(a=>{if(a.dataset.v===v)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
+  if(v==='tree'&&!treeDrawn){treeDrawn=true;requestAnimationFrame(()=>{fit(false);if(vt.k<.55)startView()})}
+}
+addEventListener('hashchange',route);
+function setViewer(id){viewer=id;try{localStorage.setItem('ft-viewer',id)}catch(e){}
+  drawTree();drawPeople();if(!$('#panel').hidden&&sel)openPanel(sel)}
+
+async function init(){
+  try{const r=await fetch('family.json');if(!r.ok)throw new Error(r.status);D=await r.json()}
+  catch(e){$('main').innerHTML='<p class="err">The family data didn’t load. Reload the page to try again.</p>';return}
+  P=D.people;ROOT=D.root;components();
+  const ids=Object.keys(P);
+  let saved=null;try{saved=localStorage.getItem('ft-viewer')}catch(e){}
+  viewer=saved&&P[saved]?saved:ROOT;
+  const kids=['46580759581','46580759692','46580691590'];
+  $('#viewas').innerHTML=`<optgroup label="Siblings">${kids.map(k=>`<option value="${k}">${esc(nameOf(P[k]))}</option>`).join('')}</optgroup><optgroup label="Anyone else">${ids.filter(i=>!kids.includes(i)).sort((a,b)=>(birthY(P[a])??9999)-(birthY(P[b])??9999)).map(k=>`<option value="${k}">${esc(nameOf(P[k]))}</option>`).join('')}</optgroup>`;
+  $('#viewas').value=viewer;$('#viewas').onchange=e=>setViewer(e.target.value);
+  const srcN=ids.reduce((n,i)=>n+P[i].sources.length,0),leadN=ids.reduce((n,i)=>n+(P[i].leads||[]).length,0);
+  $('#stats').innerHTML=`<span><b>${ids.length}</b>people</span><span><b>5</b>generations</span><span><b>${srcN}</b>attached records</span><span><b>${leadN}</b>unreviewed hints</span><span><b>1853</b>earliest birth</span>`;
+  drawTree();drawPeople();drawTimeline();drawDisc();drawAbout();route();
+}
+init();
+})();
+</script>
+
+</body>
+</html>
